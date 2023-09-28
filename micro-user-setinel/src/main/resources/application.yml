@@ -1,0 +1,16 @@
+server:
+  port: 8010
+spring:
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      discovery:
+        username: nacos
+        password: nacos
+        namespace: public
+        ephemeral: false  #  永久实例，服务宕机了也不会删除服务列表
+        # service : ${application.name} (,默认取值)
+        # group:  DEFAULT_GROUP (默认)
+        # weight: 1 (默认)

@@ -1,0 +1,30 @@
+spring:
+  application:
+    #  nacos 默认拉取的配置文件 DataId 和 name 一致，
+    #  nacos 使用非默认的配置文件名称，需要指定
+    name: nacos-config
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      username: nacos
+      password: nacos
+      config:
+        # Nacos 默认支持的 properties, 使用其他格式需要指定
+        file-extension: yaml
+        # (public 是默认值，建议与项目环境配置一致)
+        namespace: dev
+        # 默认是 true, 调整为 false 不接受配置更新
+        # refresh-enabled: false
+
+        # 扩展 shared-config-file-name 配置文件是一个配置数组
+        shared-configs:
+          - data-id: nacos-config-common.yaml
+            refresh-enabled: true
+            # group 默认 DEFAULT_GROUP
+          - data-id: nacos-config-common2.yaml
+            refresh-enabled: true
+            # group 默认 DEFAULT_GROUP
+        extension-configs:
+          - data-id: nacos-config-extension.yaml
+            refresh-enabled: true
+            # group 默认 DEFAULT_GROUP

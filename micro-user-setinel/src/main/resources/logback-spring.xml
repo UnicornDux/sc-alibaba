@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <appender name="cloud_api" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>192.168.126.10:5044</destination>
+        <!--encoder 必须配置，有多种可选 -->
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- 打印行号，方法名，官方不建议在生产环境中使用，默认为 false, 会严重影响性能 -->
+            <includeCallerData>true</includeCallerData>
+            <!--设置时区-->
+            <timeZone>UTC</timeZone>
+            <!-- 自定义时间格式 -->
+            <timestampPattern>yyyy-MM-dd'T'HH:mm:ss.SSS</timestampPattern>
+            <!-- 自定义属性，这个属性可以在 logstash 中取出使用 -->
+            <customFields>{"server_name": "demo-server"}</customFields>
+        </encoder>
+        <!-- 设置超时时间，默认没有，使用集群的时候可以加上 -->
+        <writeTimeout> 30 seconds</writeTimeout>
+    </appender>
+    <root level="info">
+        <appender-ref ref="cloud_api" />
+    </root>
+</configuration>

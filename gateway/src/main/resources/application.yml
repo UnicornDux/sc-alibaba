@@ -1,0 +1,36 @@
+server:
+  port: 8018
+  jetty:
+    accesslog:
+      enabled: true
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id : order_route  # 路由的唯一标识
+          uri: lb://order-service # 需要转发的服务地址, lb://使用nacos的本地负载均衡器
+          # 断言规则
+          predicates:
+            - Path=/order-service/**
+            # - Method=GET  // 请求的方法需要是GET
+            # - Headers=X-Requested-With,\d+ // 需要携带一个 X-Requested-With 字段, 值为数字
+            # - CheckAuth=ancion  # 自定义的断言规则
+          filters:
+            - StripPrefix=1 # 去掉一级路径前缀
+            # - CheckToken=unicorn  # 自定义的过滤器
+      globalcors:
+        cors-configurations:
+          '[/**]': # 允许跨域访问的资源
+            allowedOrigin: "*" # 允许跨域的来源
+            allowedMethod:     # 允许跨域的方法
+              - GET
+              - POST
+              - PUT
+              - FETCH
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
